@@ -2,10 +2,12 @@ from .models import Redirect
 from django import http
 from django.conf import settings
 
+
 class RedirectFallbackMiddleware(object):
     def process_response(self, request, response):
+        # No need to check for a redirect for non-404 responses.
         if response.status_code != 404:
-            return response # No need to check for a redirect for non-404 responses.
+            return response
         path = request.get_full_path()
         try:
             r = Redirect.objects.get(old_path=path)
