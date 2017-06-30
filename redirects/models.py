@@ -1,9 +1,12 @@
 import re
 
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.safestring import mark_safe
+from six import text_type
 
 
+@python_2_unicode_compatible
 class Redirect(models.Model):
 
     old_path = models.CharField(
@@ -46,8 +49,8 @@ class Redirect(models.Model):
         verbose_name_plural = 'redirects'
         ordering = ('old_path',)
 
-    def __unicode__(self):
-        return self.old_path
+    def __str__(self):
+        return text_type(self.old_path)
 
     def sub_path(self, path):
         """ If this redirect is a regular expression, it will return a
